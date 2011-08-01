@@ -1,3 +1,15 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'jquery', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges' %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#processed').load(function(){
+        $(this).pixastic('edges', {mono:true, invert:true});
+      });
+    });
+  </script>
+<% end %>
+
 <%= image_tag @user.avatar.url %>
 <%= image_tag @user.avatar.url(:medium) %>
 <%= image_tag @user.avatar.url(:thumb) %>
+<%= image_tag @user.avatar.url, :id => 'processed' %>
