@@ -4,10 +4,11 @@ class CreateUsers < ActiveRecord::Migration
       t.string :name
       t.string :email
       t.string :encrypted_password
+      t.string :salt
 
       t.string :avatar_file_name
       t.string :avatar_content_type
-      t.string :avatar_file_size
+      t.integer :avatar_file_size
       t.datetime :avatar_updated_at
       t.timestamps
     end

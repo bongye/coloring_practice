@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
 
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
+  has_many :drawings
+
   validates :name, :presence => true,
             :length => { :maximum => 50 }
 
@@ -13,7 +15,9 @@ class User < ActiveRecord::Base
 
   before_save :encrypt_password
 
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }
+  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" },
+    :default_style => :thumb,
+    :default_url => '/images/missing_:style.jpeg'
 
   def has_password?(submitted_password)
     encrypted_password == encrypt(submitted_password)
@@ -41,7 +45,7 @@ class User < ActiveRecord::Base
     def make_salt
       secure_hash("#{Time.now.utc}--#{password}")
     end
-    def secure_hash
+    def secure_hash(string)
       Digest::SHA2.hexdigest(string)
     end
 end

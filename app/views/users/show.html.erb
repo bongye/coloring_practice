@@ -1,3 +1,4 @@
+<!--
 <% content_for :javascripts do %>
   <%= javascript_include_tag 'jquery', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges' %>
   <script type="text/javascript">
@@ -8,8 +9,21 @@
     });
   </script>
 <% end %>
-
+--> 
+<div class="profile">
+  <div class="profile-image">
+    <%= image_tag @user.avatar.url(:thumb) %>
+  </div>
+  <div class="profile-detail">
+    <h2><%= @user.name %></h2>
+    <strong>E-mail</strong> <%= @user.email %> <br />
+    <strong>URL</strong> <%= link_to @user.name, @user %> <br />
+  </div>
+  <div class="clear"></div>
+</div>
+<!--
 <%= image_tag @user.avatar.url %>
 <%= image_tag @user.avatar.url(:medium) %>
 <%= image_tag @user.avatar.url(:thumb) %>
 <%= image_tag @user.avatar.url, :id => 'processed' %>
+-->

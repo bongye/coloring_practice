@@ -86,3 +86,22 @@ footer nav {
   border-radious: 10px; 
 }
 
+/* User */
+.profile-image {
+  float: left;
+  padding: 20px;
+}
+
+.profile-image img {
+  width: 100px;
+  height: 100px;
+}
+
+.profile-detail {
+  float: right;
+  width: 620px;
+}
+
+.clear {
+  clear: both;
+}
