@@ -20,6 +20,14 @@
     <strong>URL</strong> <%= link_to @user.name, @user %> <br />
   </div>
   <div class="clear"></div>
+  <div class="my-picture">
+    <% for picture in @user.pictures %>
+    <%= link_to image_tag(picture.image.url(:thumb)), picture_path(picture) %>
+    <% end %>
+  </div>
+  <%= link_to 'new picture', new_picture_path %>
+  <div class="my-drawing">
+  </div>
 </div>
 <!--
 <%= image_tag @user.avatar.url %>

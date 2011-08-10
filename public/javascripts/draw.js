@@ -12,9 +12,11 @@ Draw = function() {
       context.lineWidth = lineWidth;
 
       actionData = {
+        id: Client.getMyId(),
         action: 'pencil',
         lineWidth: lineWidth,
         color: color,
+        undo: false,
         data:[{x:x, y:y}]
       };
       
@@ -31,6 +33,9 @@ Draw = function() {
     onEnd: function(x, y) {
       context.closePath();
       actionData.data.push({x:x, y:y});
+
+      History.addAction(actionData);
+      actionData = null;
     },
     drawItem: function(item) {
       drawLines(item.color, item.lineWidth, item.data);
@@ -39,14 +44,16 @@ Draw = function() {
 
   var EraseAction = {
     onStart: function(x, y) {
-      var ERASE_WIDTH = 10;
-      context.strokeStyle = '#FFFFFF';
-      context.lineWidth = ERASE_WIDTH;
+      context.globalCompositeOperation = "copy";
+      context.strokeStyle = 'rgba(255, 255, 255, 0.0)';
+      context.lineWidth = lineWidth;
 
       actionData = {
+        id: Client.getMyId(),
         action: 'erase',
-        lineWidth: ERASE_WIDTH,
-        color: '#FFFFFF',
+        lineWidth: lineWidth,
+        color: 'rgba(255, 255, 255, 0.0)',
+        undo: false,
         data:[{x:x, y:y}]
       };
       context.beginPath();
@@ -60,10 +67,14 @@ Draw = function() {
     },
     onEnd: function(x, y) {
       context.closePath();
+      context.globalCompositeOperation = "source-over";
       actionData.data.push({x:x, y:y});
+
+      History.addAction(actionData);
+      actionData = null;
     },
     drawItem: function(item) {
-      drawLines(item.color, item.lineWidth, item.data);
+      removeLines(item.lineWidth, item.data);
     }
   };
 
@@ -140,7 +151,7 @@ Draw = function() {
 
       context.beginPath();
       context.lineWidth = lineWidth;
-      context.storkeStyle = color;
+      context.strokeStyle = color;
       context.moveTo(data[0].x, data[0].y);
       for (var i=1; i<data.length; i++) {
         context.lineTo(data[i].x, data[i].y);
@@ -153,9 +164,32 @@ Draw = function() {
     }
   }
 
+  function removeLines(lineWidth, data) {
+    if (data.length > 0) {
+      var preLineWidth = context.lineWidth;
+      var preColor = context.strokeStyle;
+      var preGlobalCompositeOperation = context.globalCompositeOperation;
+
+      context.globalCompositeOperation = "copy";
+      context.beginPath();
+      context.lineWidth = lineWidth;
+      context.strokeStyle = "rgba(0, 0, 0, 0)";
+      context.moveTo(data[0].x, data[0].y);
+      for (var i=1; i<data.length; i++) {
+        context.lineTo(data[i].x, data[i].y);
+        context.stroke();
+      }
+      context.closePath();
+      
+      context.globalCompositeOperation = preGlobalCompositeOperation;
+      context.lineWidth = preLineWidth;
+      context.strokeStyle = preColor;
+    }
+  }
+
   return {
-    initialize: function() {
-      canvas = $('#drawCanvas');
+    initialize: function(imageData) {
+      canvas = document.getElementById('draw-canvas');
       if (!canvas) {
         alert('Cannot find Canvas object.');
         return;
@@ -179,13 +213,13 @@ Draw = function() {
       canvas.addEventListener('touchstart', onTouchCanvas, false);
       canvas.addEventListener('touchmove', onTouchCanvas, false);
       canvas.addEventListener('touchend', onTouchCanvas, false);
-    };
+    },
     changeColor: function(hexColor) {
       color = hexColor;
     },
     getColor: function() {
       return color;
-    }
+    },
     changeLineWidth: function(width) {
       lineWidth = width;
       context.lineWidth = width;
@@ -219,7 +253,11 @@ Draw = function() {
     },
     drawAll: function() {
       context.clearRect(0, 0, canvas.width, canvas.height);
-
+      var items = History.getItems();
+      for (var i in items){
+        if (items[i].undo == false)
+          Draw.draw(items[i]);
+      }
     }
   };
 }();

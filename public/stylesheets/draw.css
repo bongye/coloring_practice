@@ -1,0 +1,129 @@
+#canvas-container {
+  float: left;
+  position: relative;
+}
+
+#canvas-container canvas {
+  position: absolute;
+}
+
+#tool-bar {
+  float: left;
+  width: 120px;
+  border: 1px solid;
+  border-top-color: threedhighlight;
+  border-left: 0px;
+  border-right-color: threedshadow;
+  border-bottom-color: threedshadow;
+}
+
+#tool-bar ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#tool-bar ul li {
+  margin: 0;
+  padding: 0;
+}
+
+#tool-bar #colors li, #tool-bar #buttons li {
+  float: left;
+  width: 58px;
+  height: 58px;
+  border: 1px solid blue;
+  border-top-color: threedhighlight;
+  border-left-color: threedhighlight;
+  border-right-color: threeddarkshadow;
+  border-bottom-color: threeddarkshadow;
+}
+
+#tool-bar #colors li img, #tool-bar #buttons li img {
+  width: 55px;
+  height: 55px;
+  border: 1px solid red;
+  border-top-color: threedlightshadow;
+  border-left-color: threedlightshadow;
+  border-right-color: threedshadow;
+  border-bottom-color: threedshadow;
+}
+
+#tool-bar #colors li.down div, #tool-bar #buttons li.down div {
+  background-color: threedface;
+}
+
+#tool-bar #colors:after, #tool-bar #buttons:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden;
+}
+
+#tool-bar #colors li.down. #tool-bar #colors li.sel, #tool-bar #buttons li.down, #tool-bar #buttons li.sel {
+  border-top-color: windowframe;
+  border-left-color: windowframe;
+  border-right-color: threedhighlight;
+  border-bottom-color: threedhighlight;
+}
+
+#tool-bar #buttons li.down img, #tool-bar #buttons li.sel img {
+  background-color: threedhighlight;
+  padding-left: 1px; 
+  padding-top: 1px;
+  border-top-color: threedshadow;
+  border-left-color: threedshadow;
+  border-right-color: threedlightshadow;
+  border-bottom-color: threedlightshadow;
+}
+
+#tool-bar #settings {
+  border: 1px solid;
+  border-top-color: threedshadow;
+  border-left-color: threedshadow;
+  border-right-color: threedhighlight;
+  border-bottom-color: threedhighlight;
+  margin: 5px;
+  margin-left: 2px;
+  margin-top: 5px;
+  height: 120px;
+}
+
+#tool-bar #settings div {
+  display: block;
+  cursor: default;
+  text-align: center;
+  vertical-align: middle;
+  float: left;
+  width: 45px;
+  height: 45px;
+  margin-bottom: 2px;
+  margin-top: 15px;
+}
+
+#tool-bar #settings .sel {
+  background-color: highlight;
+  color: highlighttext;
+}
+
+#tool-bar #settings div {
+  margin-left: 10px;
+  float:left;
+  line-height: 10px;
+}
+
+#drawCanvas {
+  background-color: white;
+  overflow: auto;
+  position: relative;
+  left: 0px;
+  right: 0;
+  top: 0px;
+  z-index: 3;
+  border: 1px solid #000;
+}
+
+
+#container.pencil canvas { cursor: url(images/pencil.png) 8 8, auto; }
+#container.erase canvas { cursor: url(images/eraser.png) 8 8, auto; }

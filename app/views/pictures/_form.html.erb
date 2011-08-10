@@ -1,0 +1,8 @@
+<% form_for(@picture, :html => {:multipart => true}) do |f| %>
+  <%= render 'shared/error_messages', :object => f.object %>
+  <div class="field">
+    <%= f.label :image, "Scenery Image" %><br />
+    <%= f.file_field :image %>
+  </div>
+  <%= f.submit %>
+<% end %>

@@ -1,0 +1,27 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'jquery', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges' %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#processed').load(function(){
+        $(this).pixastic('edges', {mono:true, invert:true});
+      });
+    });
+  </script>
+<% end %>
+<div class="image">
+  <div class="uploader">
+    <%= @picture.user.name %> uploaded this scenery.
+  </div>
+  <div class="original-image">
+    <%= image_tag @picture.image.url %>
+  </div>
+  <div class="processed-image">
+    <%= image_tag @picture.image.url, :id => 'processed' %>
+  </div>
+  <div class="tool-bar">
+    <%= link_to '새로 그리기', new_picture_drawing_path(@picture) %>
+    <% if is_uploader?(@picture, current_user) %>
+      <%= picture_delete_link(@picture, current_user) %>
+    <% end %>
+  </div>
+<div>

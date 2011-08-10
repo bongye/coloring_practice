@@ -1,8 +1,10 @@
-
 class UsersController < ApplicationController
+  before_filter :authenticate, :only => [:edit, :update]
+  before_filter :correct_user, :only => [:edit, :update]
   def create
     @user = User.create(params[:user])
     if @user.save
+      sign_in @user
       flash[:success] = "Welcome to the Coloring Practice!"
       redirect_to @user
     else 
