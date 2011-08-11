@@ -1,0 +1,3 @@
+<h1>Edit Drawing</h1>
+<%= render :partial => 'editor_page', :locals => {:is_new => false, :picture_url => @picture.image.url, :save_url => "/pictures/#{@picture.id}/drawings/#{@drawing.id}", :save_method => 'put', :log => @drawing.log} %>
+<%= link_to 'Back', picture_path(@picture) %>

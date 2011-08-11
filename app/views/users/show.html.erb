@@ -1,15 +1,3 @@
-<!--
-<% content_for :javascripts do %>
-  <%= javascript_include_tag 'jquery', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges' %>
-  <script type="text/javascript">
-    $(document).ready(function(){
-      $('#processed').load(function(){
-        $(this).pixastic('edges', {mono:true, invert:true});
-      });
-    });
-  </script>
-<% end %>
---> 
 <div class="profile">
   <div class="profile-image">
     <%= image_tag @user.avatar.url(:thumb) %>
@@ -20,18 +8,19 @@
     <strong>URL</strong> <%= link_to @user.name, @user %> <br />
   </div>
   <div class="clear"></div>
+  <h4>My Pictures</h4>
   <div class="my-picture">
     <% for picture in @user.pictures %>
     <%= link_to image_tag(picture.image.url(:thumb)), picture_path(picture) %>
+    <% end %>
+  </div>
+  <h4>My Drawings</h4>
+  <div class="my-drawing">
+    <% for drawing in @user.drawings %>
+    <%= link_to image_tag(drawing.image.url(:thumb)), edit_picture_drawing_path(drawing.picture, drawing) %>
     <% end %>
   </div>
   <%= link_to 'new picture', new_picture_path %>
   <div class="my-drawing">
   </div>
 </div>
-<!--
-<%= image_tag @user.avatar.url %>
-<%= image_tag @user.avatar.url(:medium) %>
-<%= image_tag @user.avatar.url(:thumb) %>
-<%= image_tag @user.avatar.url, :id => 'processed' %>
--->

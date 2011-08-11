@@ -3,6 +3,8 @@ class CreateDrawings < ActiveRecord::Migration
     create_table :drawings do |t|
       t.integer :user_id
       t.integer :picture_id
+      
+      t.text :log
 
       t.string :image_file_name
       t.string :image_content_type

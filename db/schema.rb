@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(:version => 20110802075616) do
   create_table "drawings", :force => true do |t|
     t.integer  "user_id"
     t.integer  "picture_id"
+    t.text     "log"
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"

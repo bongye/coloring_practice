@@ -1,6 +1,6 @@
 class DrawingsController < ApplicationController
   before_filter :prepare_picture
-  before_filter :authenticate, :only => [:new, :edit]
+  before_filter :authenticate, :only => [:new, :edit, :create, :update]
 
   def show
     @drawing = Drawing.find(params[:id])
@@ -12,35 +12,18 @@ class DrawingsController < ApplicationController
     @drawing = Drawing.new
     @drawing.picture = @picture
     @drawing.user = current_user
-
-    image_data = params[:image_data];
-    file_name = Digest::SHA1.hexdigest(Time.now.to_s)
-    file_ext = 'png';
-    tmp_file = "#{Rails.root}/tmp/#{file_name}.#{file_ext}";
-    id = 0;
-    while File.exists?(tmp_file) do
-      tmp_file = "#{Rails.root}/tmp/#{file_name}-#{id}.#{file_ext}";
-      id += 1
-    end
-
-    File.open(tmp_file, 'wb') do |f|
-      f.write(Base64.decode64(image_data))
-    end
-    @drawing.image = File.open(tmp_file)
-    @drawing.save
-    File.delete(tmp_file)
+    @drawing.log = params[:log]
+  
+    save_canvas_image(@drawing, params[:image_data])
   end
   def edit
     @drawing = Drawing.find(params[:id])
   end
   def update
     @drawing = Drawing.find(params[:id])
-    if @drawing.update_attributes(params[:drawing])
-      flash[:success] = "Drawing saved."
-      redirect_to @drawing
-    else
-      render 'edit'
-    end
+    @drawing.log = params[:log]
+    save_canvas_image(@drawing, params[:image_data])
+    render 'create'
   end
   def destroy
     @drawing = Drawing.find(params[:id])
@@ -51,5 +34,23 @@ class DrawingsController < ApplicationController
   private 
     def prepare_picture
       @picture = Picture.find(params[:picture_id])
+    end
+    def save_canvas_image(drawing, image_data)
+      file_name = Digest::SHA1.hexdigest(Time.now.to_s)
+      file_ext = 'png';
+      tmp_file = "#{Rails.root}/tmp/#{file_name}.#{file_ext}";
+      id = 0;
+      while File.exists?(tmp_file) do
+        tmp_file = "#{Rails.root}/tmp/#{file_name}-#{id}.#{file_ext}";
+        id += 1
+      end
+
+      File.open(tmp_file, 'wb') do |f|
+        f.write(Base64.decode64(image_data))
+      end
+      drawing.image = File.open(tmp_file) 
+      drawing.save
+      drawing.image.reprocess!
+      File.delete(tmp_file)
     end
 end

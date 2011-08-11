@@ -9,15 +9,18 @@
   </script>
 <% end %>
 <div class="image">
-  <div class="uploader">
-    <%= @picture.user.name %> uploaded this scenery.
+  <h4><%= @picture.user.name %> uploaded this scenery.</h4>
+  <div class="picture">
+    <%= image_tag @picture.image.url(:medium) %>
+    <%= image_tag @picture.image.url(:medium), :id => 'processed' %>
   </div>
-  <div class="original-image">
-    <%= image_tag @picture.image.url %>
+  <h4>Drawings</h4>
+  <div class="drawings">
+    <% for drawing in @picture.drawings %>
+      <%= image_tag drawing.image.url(:thumb) %>
+    <% end %>
   </div>
-  <div class="processed-image">
-    <%= image_tag @picture.image.url, :id => 'processed' %>
-  </div>
+
   <div class="tool-bar">
     <%= link_to '새로 그리기', new_picture_drawing_path(@picture) %>
     <% if is_uploader?(@picture, current_user) %>

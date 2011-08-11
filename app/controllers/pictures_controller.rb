@@ -27,5 +27,4 @@ class PicturesController < ApplicationController
     @picture.destroy
     redirect_to user
   end
-  
 end

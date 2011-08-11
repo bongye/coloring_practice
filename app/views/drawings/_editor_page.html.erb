@@ -1,0 +1,130 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'client', 'draw', 'history', 'JSLINQ', 'button_event', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges'  %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#colors").children().click(function(){
+        selectColor(this);
+      });
+      
+      $("#buttons #redo").click(function(){
+        Client.redo();
+      }).mousedown(function(){
+        $(this).addClass("sel");
+      }).mouseout(function(){
+        $(this).removeClass("sel");
+      });
+
+      $("#buttons #undo").click(function(){
+        Client.undo();
+      }).mousedown(function(){
+        $(this).addClass("sel");
+      }).mouseout(function(){
+        $(this).removeClass("sel");
+      });
+
+      $("#buttons #pencil").click(function(){
+        selectTool(this);
+      });
+      $("#buttons #erase").click(function(){
+        selectTool(this);
+      });
+
+      var backgroundImage = new Image();
+      $(backgroundImage).load(function(){
+        var backgroundCanvas;
+        
+        var options = {mono:true, invert:true};
+        $(this).pixastic('edges', options);
+        backgroundCanvas = options.resultCanvas;
+        
+        $(backgroundCanvas).attr('id', 'background-canvas').css('z-index', 0);
+        $('#canvas-container').append($(backgroundCanvas)).css({
+          'width': backgroundCanvas.width + 'px',
+          'height': backgroundCanvas.height + 'px'
+        });
+
+        $('#draw-canvas').attr({
+          'width':backgroundCanvas.width,
+          'height':backgroundCanvas.height
+        }).css('z-index', 1);
+        
+
+        Draw.initialize();
+        Client.initialize();
+
+        <% if !is_new %>
+        var drawing_log = "<%=log%>".replace(/&quot;/g, "\"");
+        var items = JSON.parse(drawing_log);
+        for(var i in items){
+          var item = items[i];
+          History.addAction(item);
+        }
+        Draw.drawAll();
+        <% end %>
+      });
+      backgroundImage.src = "<%=picture_url%>";
+    });
+
+    function save_drawing(){
+      var backgroundCanvas = document.getElementById('background-canvas');
+      var drawCanvas = document.getElementById('draw-canvas');
+      var combinedCanvas = document.createElement('canvas');
+      combinedCanvas.width = backgroundCanvas.width;
+      combinedCanvas.height = backgroundCanvas.width;
+
+      var context = combinedCanvas.getContext('2d');
+      context.drawImage(backgroundCanvas, 0, 0);
+      context.drawImage(drawCanvas, 0, 0);
+
+      var dataURI = combinedCanvas.toDataURL();
+      var imageData = dataURI.substr(dataURI.indexOf(',')+1);
+      var logData = JSON.stringify(History.getItems());
+      $.ajax({
+        url: '<%=save_url%>',
+        type: '<%=save_method%>',
+        data: {
+          'image_data': imageData,
+          'log':logData
+        },
+        dataType:'json',
+        success: function(data){
+          alert("성공적으로 저장되었습니다.");
+        },
+        error: function(data){  
+          alert(data.responseText);
+        }
+      });
+    }
+  </script>
+<% end %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'draw' %>
+<% end %>
+<div id="canvas-container">
+  <canvas id="draw-canvas"></canvas>
+</div>
+
+<div id="tool-bar">
+  <ul id="colors">
+    <li style="background-color:#000" class="sel"><div></div></li>
+    <li style="background-color:#F00"><div></div></li>
+    <li style="background-color:#FF0"><div></div></li>
+    <li style="background-color:#0F0"><div></div></li>
+    <li style="background-color:#909"><div></div></li>
+    <li style="background-color:#009"><div></div></li>
+  </ul>
+  <ul id="buttons">
+    <li id="undo"><img src="/images/undo.png" /></li>
+    <li id="redo"><img src="/images/redo.png" /></li>
+    <li id="pencil" class="tools sel"><img src="/images/pencil.png" /></li>
+    <li id="erase" class="tools"><img src="/images/eraser.png" /></li>
+  </ul>
+  <div id="settings">
+    <div onclick="selectSetting(this, 1)" style="font-size:90%" class="sel">&#9632;</div>
+    <div onclick="selectSetting(this, 4)" style="font-size:130%">&#9632;</div>
+    <div onclick="selectSetting(this, 7)" style="font-size:155%">&#9632;</div>
+    <div onclick="selectSetting(this, 11)" style="font-size:180%">&#9632;</div>
+  </div>
+</div>
+<div class="clear"></div>
+<%= link_to_function '저장', "save_drawing()" %>
