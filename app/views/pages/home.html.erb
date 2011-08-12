@@ -1,7 +1,7 @@
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag 'home' %>
 <% end %>
-<h1 class="title">Coloring Practice</h1>
+<h1 class="title">Home</h1>
 <% if !signed_in? %>
 <p class="signup_message">
   This is the home page for Coloring Practice Web application. <%= link_to "Sign up now!", signup_path, :class => "signup_button round" %>
@@ -16,6 +16,6 @@
 <h4>Recently Drawing</h4>
 <div class="recent-drawing">
 <% for drawing in @recent_drawings %>
-  <%= image_tag drawing.image.url(:thumb) %>
+  <%= link_to image_tag(drawing.image.url(:thumb)), picture_drawing_path(drawing.picture, drawing) %>
 <% end %>
 </div>

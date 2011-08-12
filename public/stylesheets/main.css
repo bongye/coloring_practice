@@ -47,7 +47,6 @@ nav {
 }
 
 nav {
-  background-color: white;
   padding: 0 0.7em;
   white-space: nowrap;
 }
@@ -104,6 +103,10 @@ footer .logo {
 .profile-detail {
   float: right;
   width: 620px;
+}
+
+.my-picture {
+  margin-bottom: 30px;
 }
 
 .clear {

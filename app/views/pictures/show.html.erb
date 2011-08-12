@@ -8,8 +8,11 @@
     });
   </script>
 <% end %>
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag 'picture' %>
+<% end %>
 <div class="image">
-  <h4><%= @picture.user.name %> uploaded this scenery.</h4>
+  <h4><%= link_to @picture.user.name, @picture.user %> uploaded this scenery.</h4>
   <div class="picture">
     <%= image_tag @picture.image.url(:medium) %>
     <%= image_tag @picture.image.url(:medium), :id => 'processed' %>
@@ -17,14 +20,14 @@
   <h4>Drawings</h4>
   <div class="drawings">
     <% for drawing in @picture.drawings %>
-      <%= image_tag drawing.image.url(:thumb) %>
+      <%= link_to image_tag(drawing.image.url(:thumb)), picture_drawing_path(drawing.picture, drawing) %>
     <% end %>
   </div>
 
   <div class="tool-bar">
     <%= link_to '새로 그리기', new_picture_drawing_path(@picture) %>
     <% if is_uploader?(@picture, current_user) %>
-      <%= picture_delete_link(@picture, current_user) %>
+      <%= picture_delete_link(@picture) %>
     <% end %>
   </div>
-<div>
+</div>
