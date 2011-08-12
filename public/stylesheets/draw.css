@@ -1,6 +1,9 @@
 #canvas-container {
   float: left;
   position: relative;
+  padding: 20px;
+  border: 3px solid #7f3300;
+  background: url('/images/wood_pattern.jpeg');
 }
 
 #canvas-container canvas {
@@ -10,83 +13,91 @@
 #tool-bar {
   float: left;
   width: 120px;
-  border: 1px solid;
-  border-top-color: threedhighlight;
-  border-left: 0px;
-  border-right-color: threedshadow;
-  border-bottom-color: threedshadow;
+  margin-left: 50px;
 }
 
 #tool-bar ul {
   margin: 0;
   padding: 0;
   list-style: none;
+  overflow: visible;
+  margin-top: 15px;
+  height: 118px;
 }
 
 #tool-bar ul li {
   margin: 0;
   padding: 0;
+  list-style: none;
 }
 
-#tool-bar #colors li, #tool-bar #buttons li {
+#tool-bar .farbtastic {
+  left: -35px;
+}
+
+#tool-bar #buttons li {
   float: left;
-  width: 58px;
-  height: 58px;
-  border: 1px solid blue;
-  border-top-color: threedhighlight;
-  border-left-color: threedhighlight;
-  border-right-color: threeddarkshadow;
-  border-bottom-color: threeddarkshadow;
+  width: 59px;
+  height: 59px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  -moz-box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  box-shadow:
+    0 8px 0 #1a74a1,
+    0 15px 20px rgba(0,0,0,.35);
+  -webkit-transition: -webkit-box-shadow .2s ease-in-out;
+  -moz-transition: -moz-box-shadow .2s ease-in-out;
+  -o-transition: -o-box-shadow .2s ease-in-out;
+  transition: box-shadow .2s ease-in-out;
+}
+#tool-bar #buttons li img {
+  width: 45px;
+  height: 45px;
+  padding: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  border-radius: 7px;
+  background: #3194c6;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#3194c6), to(#5bacd6));
+  background: -moz-linear-gradient(#3194c6, #5bacd6);
+  -webkit-box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  -moz-box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  box-shadow: inset 0 -1px 1px rgba(255,255,255,.15);
+  -webkit-transition: -webkit-transform .2s ease-in-out;
+  -moz-transition: -moz-transform .2s ease-in-out;
+  -o-transition: -o-transform .2s ease-in-out;
+  transition: transform .2s ease-in-out;
 }
 
-#tool-bar #colors li img, #tool-bar #buttons li img {
-  width: 55px;
-  height: 55px;
-  border: 1px solid red;
-  border-top-color: threedlightshadow;
-  border-left-color: threedlightshadow;
-  border-right-color: threedshadow;
-  border-bottom-color: threedshadow;
+#tool-bar #buttons li.sel {
+  -webkit-box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
+  -moz-box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
+  box-shadow:
+    0 8px 0 #1a74a1,
+    0 12px 10px rgba(0,0,0,.3);
 }
 
-#tool-bar #colors li.down div, #tool-bar #buttons li.down div {
-  background-color: threedface;
-}
-
-#tool-bar #colors:after, #tool-bar #buttons:after {
-  content: ".";
-  display: block;
-  height: 0;
-  clear: both;
-  visibility: hidden;
-}
-
-#tool-bar #colors li.down. #tool-bar #colors li.sel, #tool-bar #buttons li.down, #tool-bar #buttons li.sel {
-  border-top-color: windowframe;
-  border-left-color: windowframe;
-  border-right-color: threedhighlight;
-  border-bottom-color: threedhighlight;
-}
-
-#tool-bar #buttons li.down img, #tool-bar #buttons li.sel img {
-  background-color: threedhighlight;
-  padding-left: 1px; 
-  padding-top: 1px;
-  border-top-color: threedshadow;
-  border-left-color: threedshadow;
-  border-right-color: threedlightshadow;
-  border-bottom-color: threedlightshadow;
+#tool-bar #buttons li.sel img {
+  -webkit-transform: translate(0, 4px);
+  -moz-transform: translate(0, 4px);
+  -o-transform: translate(0, 4px);
+  transform: translate(0, 4px);
 }
 
 #tool-bar #settings {
-  border: 1px solid;
-  border-top-color: threedshadow;
-  border-left-color: threedshadow;
-  border-right-color: threedhighlight;
-  border-bottom-color: threedhighlight;
   margin: 5px;
   margin-left: 2px;
-  margin-top: 5px;
+  margin-top: 15px;
   height: 120px;
 }
 
@@ -110,7 +121,6 @@
 #tool-bar #settings div {
   margin-left: 10px;
   float:left;
-  line-height: 10px;
 }
 
 #drawCanvas {
@@ -124,6 +134,3 @@
   border: 1px solid #000;
 }
 
-
-#container.pencil canvas { cursor: url(images/pencil.png) 8 8, auto; }
-#container.erase canvas { cursor: url(images/eraser.png) 8 8, auto; }

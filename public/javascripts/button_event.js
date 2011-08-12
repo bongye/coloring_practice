@@ -3,7 +3,7 @@ function selectColor(obj) {
   $(obj).addClass("sel");
 
   Draw.changeColor($(obj).css("background-color"));
-  
+ 
   selectTool(document.getElementById('pencil'));
 }
 

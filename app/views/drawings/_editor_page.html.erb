@@ -1,16 +1,18 @@
 <% content_for :javascripts do %>
-  <%= javascript_include_tag 'client', 'draw', 'history', 'JSLINQ', 'button_event', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges'  %>
+  <%= javascript_include_tag 'client', 'draw', 'history', 'JSLINQ', 'button_event', 'pixastic/pixastic.core', 'pixastic/pixastic.jquery', 'pixastic/actions/edges', 'farbtastic' %>
   <script type="text/javascript">
     $(document).ready(function(){
-      $("#colors").children().click(function(){
-        selectColor(this);
+      var picker = $.farbtastic($("#color-picker"));
+      picker.linkTo(function(color){
+        $('#color').css('background-color', color);
+        $('#color').val(color);
+        Draw.changeColor(color);
       });
-      
       $("#buttons #redo").click(function(){
         Client.redo();
       }).mousedown(function(){
         $(this).addClass("sel");
-      }).mouseout(function(){
+      }).mouseup(function(){
         $(this).removeClass("sel");
       });
 
@@ -18,7 +20,7 @@
         Client.undo();
       }).mousedown(function(){
         $(this).addClass("sel");
-      }).mouseout(function(){
+      }).mouseup(function(){
         $(this).removeClass("sel");
       });
 
@@ -98,21 +100,19 @@
   </script>
 <% end %>
 <% content_for :stylesheets do %>
-  <%= stylesheet_link_tag 'draw' %>
+  <%= stylesheet_link_tag 'draw', 'farbtastic' %>
 <% end %>
 <div id="canvas-container">
   <canvas id="draw-canvas"></canvas>
 </div>
 
 <div id="tool-bar">
-  <ul id="colors">
-    <li style="background-color:#000" class="sel"><div></div></li>
-    <li style="background-color:#F00"><div></div></li>
-    <li style="background-color:#FF0"><div></div></li>
-    <li style="background-color:#0F0"><div></div></li>
-    <li style="background-color:#909"><div></div></li>
-    <li style="background-color:#009"><div></div></li>
-  </ul>
+  <div id="color-picker-container">
+    <form>
+      <input type="text" id="color" name="color" value="#000000" />
+    </form>
+    <div id="color-picker"></div>
+  </div>
   <ul id="buttons">
     <li id="undo"><img src="/images/undo.png" /></li>
     <li id="redo"><img src="/images/redo.png" /></li>

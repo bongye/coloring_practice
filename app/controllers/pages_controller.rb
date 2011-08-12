@@ -2,10 +2,8 @@ class PagesController < ApplicationController
   def home
     @title = "Home"
 
-    if signed_in?
-      @user = current_user
-      redirect_to @user
-    end
+    @recent_pictures = Picture.order('updated_at').limit(5)
+    @recent_drawings = Drawing.order('updated_at').limit(5)
   end
   def contact
     @title = "Contact"
