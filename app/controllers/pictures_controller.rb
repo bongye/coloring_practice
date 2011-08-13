@@ -1,6 +1,5 @@
 class PicturesController < ApplicationController
   before_filter :authenticate, :only => [:new, :create]
-  before_filter :correct_user, :only => [:destroy]
 
   def new
     @picture = Picture.new
